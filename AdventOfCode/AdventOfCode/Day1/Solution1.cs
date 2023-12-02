@@ -1,32 +1,32 @@
-﻿namespace AdventOfCode
+﻿using System.Text.RegularExpressions;
+
+namespace AdventOfCode
 {
-    public class Solution1
+    public partial class Solution1
     {
-        private static readonly Dictionary<string, int> ValidDigits = new()
+        private static readonly Dictionary<string, string> LetterDigits = new()
         {
-            {"one", 1 }, {"two", 2 }, {"three", 3 }, {"four", 4 }, {"five", 5 }, {"six", 6 }, {"seven", 7 }, {"eight", 8 }, {"nine", 9 }, 
-            {"1", 1 }, {"2", 2 }, {"3", 3 }, {"4", 4 }, {"5", 5 }, {"6", 6 }, {"7", 7 }, {"8", 8 }, {"9", 9 }        
+            { "one", "one1one" }, { "two", "two2two" }, { "three", "three3three" }, { "four", "four4four" },
+            { "five", "five5five" }, { "six", "six6six" }, { "seven", "seven7seven" }, { "eight", "eight8eight" },
+            { "nine", "nine9nine" }
         };
 
-        public static void Solve()
+        [GeneratedRegex("\\d")]
+        private static partial Regex Digit();
+
+        public static void Solve(bool includeLetterDigits = false)
         {
             var lines = File.ReadLines("Day1/input.txt");
             var calibrationTotal = 0;
 
             foreach (var line in lines)
             {
-                int? firstDigit = null;
-                int? lastDigit = null;
-                for (int i = 0; i < line.Length; i++)
-                {
-                    foreach (var digit in ValidDigits.Where(digit => line[i..].StartsWith(digit.Key)))
-                    {
-                        firstDigit ??= digit.Value;
-                        lastDigit = digit.Value;
-                    }
-                }
+                var parsedLine = includeLetterDigits
+                    ? LetterDigits.Aggregate(line, (current, kvp) => current.Replace(kvp.Key, kvp.Value))
+                    : line;
 
-                calibrationTotal += (firstDigit ?? 0) * 10 + (lastDigit ?? 0);
+                calibrationTotal += int.Parse(Digit().Match(parsedLine).Value) * 10;
+                calibrationTotal += int.Parse(Digit().Match(new string(parsedLine.Reverse().ToArray())).Value);
             }
 
             Console.WriteLine($"The sum of the calibration values is {calibrationTotal}");
