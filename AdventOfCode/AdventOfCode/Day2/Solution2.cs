@@ -2,11 +2,9 @@
 
 namespace AdventOfCode
 {
-    public class Solution2 : Solution
+    public class Solution2
     {
-        public override int Day => 2;
-
-        public override void Solve()
+        public static void Solve()
         {
             var lines = File.ReadLines("Day2/input.txt");
 
