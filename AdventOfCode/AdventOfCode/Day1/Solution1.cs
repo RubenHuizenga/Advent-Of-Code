@@ -11,8 +11,7 @@ namespace AdventOfCode
             { "nine", "nine9nine" }
         };
 
-        [GeneratedRegex("\\d")]
-        private static partial Regex Digit();
+        [GeneratedRegex("\\d")] private static partial Regex Digit();
 
         public static void Solve(bool includeLetterDigits = false)
         {
